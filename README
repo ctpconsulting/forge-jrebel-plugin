@@ -7,7 +7,17 @@ Preparations required:
 In Seam Forge, setup a project, make it a web project and run:
 forge $ forge git-plugin git://github.com/ctpconsulting/forge-jrebel-plugin.git
 forge $ jrebel setup
-forge $ jrebel container --name JBOSS6
+forge $ jrebel container --named JBOSS6
+forge $ build
 
-On the command line:
-mvn cargo:deploy cargo:start
+On a new shell command line:
+mvn cargo:start
+
+Back in Seam Forge, use
+forge $ mvn compile
+
+(build will run a clean, which stops JBoss)
+
+NOTES
+- If you stop JBoss, use mvn clean package cargo:start to restart
+- use $ jrebel rebel-xml to regenerate the rebel.xml (e.g. when switching from JAR to WAR packaging)

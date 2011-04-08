@@ -15,9 +15,9 @@ public class JRebelConfig {
             File properties = resolveRebelProperties(rebelHome);
             if (!containsProperty(properties, property)) {
                 FileUtils.fileAppend(properties.getAbsolutePath(), "\n" + property + "=" + value);
-                out.println("Successfully updated JRebel config: " + property + " = " + value);
+                out.println(ShellColor.GREEN, "***SUCCESS*** Updated JRebel config: " + property + " = " + value);
             } else {
-                out.println(ShellColor.YELLOW, "JRebel config already contains " + property + ", skipping.");
+                out.println(ShellColor.YELLOW, "***INFO*** JRebel config already contains " + property + ", skipping.");
             }
         } catch (IOException e) {
             throw new RuntimeException("Unable to write to jrebel.properties", e);

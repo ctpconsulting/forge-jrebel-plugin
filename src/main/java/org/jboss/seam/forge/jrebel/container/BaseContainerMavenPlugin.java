@@ -35,6 +35,15 @@ public abstract class BaseContainerMavenPlugin implements ContainerMavenPlugin {
         return plugin;
     }
     
+    protected Plugin createContainerPlugin(String groupId, String artifactId, String version) {
+        Plugin plugin = new Plugin();
+        plugin.setGroupId(groupId);
+        plugin.setArtifactId(artifactId);
+        plugin.setVersion(version);
+
+        return plugin;
+    }
+    
     protected boolean checkRebelEnv(PipeOut out) {
         String rebelHome = System.getenv(JRebelPlugin.REBEL_ENV_HOME);
         if (StringUtils.isEmpty(rebelHome)) {

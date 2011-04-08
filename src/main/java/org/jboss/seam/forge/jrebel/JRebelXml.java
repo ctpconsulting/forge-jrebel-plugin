@@ -10,13 +10,23 @@ import org.apache.maven.model.Model;
 import org.codehaus.plexus.util.IOUtil;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
 import org.jboss.seam.forge.project.Project;
+import org.jboss.seam.forge.project.facets.builtin.MavenResourceFacet;
+import org.jboss.seam.forge.shell.ShellColor;
+import org.jboss.seam.forge.shell.plugins.PipeOut;
 
 public class JRebelXml {
     
     @Inject
     private Project project;
+    
+    public void createRebelXml(Model pom, PipeOut out) {
+        String pathVar = ProjectUtils.createPathVar(pom);
+        MavenResourceFacet resource = project.getFacet(MavenResourceFacet.class);
+        resource.createResource(createXml(pathVar).toCharArray(), "rebel.xml");
+        out.println(ShellColor.GREEN, "***SUCCESS*** Created rebel.xml");
+    }
 
-    public String createXml(String pathVar) throws RuntimeException {
+    private String createXml(String pathVar) throws RuntimeException {
         try {
             pathVar = "${" + pathVar + "}";
             String baseTemplate = readResource("rebel.xml");
@@ -27,6 +37,7 @@ public class JRebelXml {
             throw new RuntimeException("Could not create rebel.xml", e);
         }
     }
+    
     
     private boolean isWebModule(Model pom) {
         return pom.getPackaging().equals("war");

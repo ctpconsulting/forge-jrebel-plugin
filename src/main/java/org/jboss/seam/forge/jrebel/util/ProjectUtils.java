@@ -10,5 +10,9 @@ public abstract class ProjectUtils {
         MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
         return facet.getPOM();
     }
+    
+    public static String createPathVar(Model pom) {
+        return pom.getArtifactId() + ".root";
+    }
 
 }

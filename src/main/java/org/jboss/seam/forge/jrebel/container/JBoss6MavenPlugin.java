@@ -14,6 +14,8 @@ public class JBoss6MavenPlugin extends CargoMavenPlugin {
                .append("    <home>${env.JBOSS_HOME}</home>")
                .append("</container>");
         builder.append("<configuration>")
+               .append("    <type>standalone</type>")
+               .append("    <home>target/jboss6x</home>")
                .append("    <properties>")
                .append("        <cargo.jvmargs>")
                .append("-noverify -javaagent:${env." + JRebelPlugin.REBEL_ENV_HOME + "}" +

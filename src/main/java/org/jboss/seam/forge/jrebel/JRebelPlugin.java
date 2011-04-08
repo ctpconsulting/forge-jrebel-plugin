@@ -11,7 +11,6 @@ import org.jboss.seam.forge.jrebel.container.Container;
 import org.jboss.seam.forge.jrebel.container.ContainerMavenPlugin;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
 import org.jboss.seam.forge.project.Project;
-import org.jboss.seam.forge.project.facets.builtin.MavenResourceFacet;
 import org.jboss.seam.forge.shell.plugins.Alias;
 import org.jboss.seam.forge.shell.plugins.Command;
 import org.jboss.seam.forge.shell.plugins.Option;
@@ -39,38 +38,36 @@ public class JRebelPlugin implements Plugin {
     @Inject
     private Instance<ContainerMavenPlugin> containers;
     
-    @Command(value = "setup")
+    @Command(value = "setup", help = "Initialize JRebel for this project")
     public void setup(
             @Option(name="rebelHome") String home, 
             final PipeOut out) {
         Model pom = ProjectUtils.resolvePom(project);
         createRebelXml(pom, out);
-        createRebelConfig(home, createPathVar(pom), projectRootPath(), out);
+        createRebelConfig(home, pom, out);
         updateContainerPlugins(pom, out);
     }
 
-    @Command(value = "rebel-xml")
+    @Command(value = "rebel-xml", help = "Creates or overwrites rebel.xml")
     public void rebelXml(final PipeOut out) {
         Model pom = ProjectUtils.resolvePom(project);
         createRebelXml(pom, out);
     }
     
-    @Command(value = "container")
+    @Command(value = "container", help = "Add a container with the JRebel start parameters")
     public void addContainer(
-            @Option(name="name", required=true) Container container,
+            @Option(name="named", required=true) Container container,
             final PipeOut out) {
         ContainerMavenPlugin plugin = BeanManagerUtils.getContextualInstance(beanManager, container.getContainer());
         plugin.addPlugin(ProjectUtils.resolvePom(project), out);
     }
 
     private void createRebelXml(Model pom, PipeOut out) {
-        String pathVar = createPathVar(pom);
-        MavenResourceFacet resource = project.getFacet(MavenResourceFacet.class);
-        resource.createResource(rebelXml.createXml(pathVar).toCharArray(), "rebel.xml");
+        rebelXml.createRebelXml(pom, out);
     }
     
-    private void createRebelConfig(String rebelHome, String property, String value, PipeOut out) {
-        rebelConfig.writeTo(rebelHome, property, value, out);
+    private void createRebelConfig(String rebelHome, Model pom, PipeOut out) {
+        rebelConfig.writeTo(rebelHome, ProjectUtils.createPathVar(pom), projectRootPath(), out);
     }
     
     private void updateContainerPlugins(Model pom, PipeOut out) {
@@ -79,10 +76,6 @@ public class JRebelPlugin implements Plugin {
             ContainerMavenPlugin plugin = it.next();
             plugin.updateConfig(pom, out);
         }
-    }
-    
-    private String createPathVar(Model pom) {
-        return pom.getArtifactId() + ".root";
     }
     
     private String projectRootPath() {

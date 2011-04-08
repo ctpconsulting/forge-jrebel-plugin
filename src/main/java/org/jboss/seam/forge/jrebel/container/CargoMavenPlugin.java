@@ -12,13 +12,14 @@ import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.jboss.seam.forge.project.Project;
 import org.jboss.seam.forge.project.facets.MavenCoreFacet;
-import org.jboss.seam.forge.project.facets.builtin.MavenDependencyFacet;
+import org.jboss.seam.forge.shell.ShellColor;
 import org.jboss.seam.forge.shell.plugins.PipeOut;
 
 public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     
     public static final String GROUP_ID = "org.codehaus.cargo";
     public static final String ARTIFACT_ID = "cargo-maven2-plugin";
+    public static final String PREFERRED_VERSION = "1.0.6";
     public static final String DEPENDENCY = GROUP_ID + ":" + ARTIFACT_ID;
     
     @Inject
@@ -44,10 +45,11 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     public void addPlugin(Model pom, PipeOut out) {
         try {
             MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
-            MavenDependencyFacet dependencyFacet = project.getFacet(MavenDependencyFacet.class);
-            Plugin plugin = addJRebelConfig(createContainerPlugin(dependencyFacet), out);
+            Plugin plugin = addJRebelConfig(
+                    createContainerPlugin(GROUP_ID, ARTIFACT_ID, PREFERRED_VERSION), out);
             pom.getBuild().getPlugins().add(plugin);
             facet.setPOM(pom);
+            out.println(ShellColor.GREEN, "***SUCCESS*** Successfully added " + getName() + " container");
         } catch (Exception e) {
             throw new RuntimeException("Failed to add plugin", e);
         }
