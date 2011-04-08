@@ -21,3 +21,7 @@ forge $ mvn compile
 NOTES
 - If you stop JBoss, use mvn clean package cargo:start to restart
 - use $ jrebel rebel-xml to regenerate the rebel.xml (e.g. when switching from JAR to WAR packaging)
+- Make sure you have run agent-settings.sh/bat and saved an initial configuration,
+  otherwise the agent will not be activated in JBoss.
+
+- Tested on OS X and Windows 7, Linux folks: give me a shout.
