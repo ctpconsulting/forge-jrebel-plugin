@@ -1,0 +1,6 @@
+    <web>
+        <link target="/">
+            <dir name="{0}/src/main/webapp">
+            </dir>
+        </link>
+    </web>

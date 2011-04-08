@@ -1,0 +1,4 @@
+    <classpath>
+        <dir name="{0}/target/classes">
+        </dir>
+    </classpath>

@@ -1,0 +1,10 @@
+USAGE
+
+Preparations required:
+- Define a JBOSS_HOME environment variable pointing to your JBoss 6 installation
+- Define a REBEL_HOME environment variable pointing to your JRebel installation
+
+In Seam Forge, setup a project, make it a web project and run:
+forge $ forge git-plugin git://github.com/ctpconsulting/forge-jrebel-plugin.git
+forge $ jrebel setup
+forge $ jrebel container --name JBOSS6
