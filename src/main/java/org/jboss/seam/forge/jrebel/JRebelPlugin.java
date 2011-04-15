@@ -1,5 +1,6 @@
 package org.jboss.seam.forge.jrebel;
 
+import org.jboss.seam.forge.jrebel.config.JRebelConfig;
 import java.util.Iterator;
 import javax.enterprise.inject.Any;
 
@@ -7,6 +8,9 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.apache.maven.model.Model;
+import org.jboss.seam.forge.jrebel.config.FileRebelXml;
+import org.jboss.seam.forge.jrebel.config.MavenRebelXml;
+import org.jboss.seam.forge.jrebel.config.RebelXml;
 import org.jboss.seam.forge.jrebel.container.ContainerLiteral;
 import org.jboss.seam.forge.jrebel.container.ContainerType;
 import org.jboss.seam.forge.jrebel.container.ContainerMavenPlugin;
@@ -22,7 +26,7 @@ import org.jboss.seam.forge.shell.plugins.Topic;
 
 @Alias("jrebel")
 @Help("Integrate JRebel in your project")
-@Topic("Project")
+@Topic("Productivity")
 public class JRebelPlugin implements Plugin {
 
     public static final String REBEL_ENV_HOME = "REBEL_HOME";
@@ -30,8 +34,8 @@ public class JRebelPlugin implements Plugin {
     @Inject
     private Project project;
 
-    @Inject
-    private JRebelXml rebelXml;
+    @Inject @Any
+    private Instance<RebelXml> rebelXml;
 
     @Inject
     private JRebelConfig rebelConfig;
@@ -41,10 +45,12 @@ public class JRebelPlugin implements Plugin {
 
     @Command(value = "setup", help = "Initialize JRebel for this project")
     public void setup(
-            @Option(name="rebelHome") String home,
+            @Option(name="rebelHome", help="Specify a REBEL_HOME") String home,
+            @Option(name="withoutMaven", help="Don't use the Zeroturnaround Maven Plugin",
+                    defaultValue="false", flagOnly=true) Boolean skipMaven,
             final PipeOut out) {
         Model pom = ProjectUtils.resolvePom(project);
-        createRebelXml(pom, out);
+        createRebelXml(pom, skipMaven, out);
         createRebelConfig(home, pom, out);
         updateContainerPlugins(pom, out);
     }
@@ -52,7 +58,7 @@ public class JRebelPlugin implements Plugin {
     @Command(value = "rebel-xml", help = "Creates or overwrites rebel.xml")
     public void rebelXml(final PipeOut out) {
         Model pom = ProjectUtils.resolvePom(project);
-        createRebelXml(pom, out);
+        createRebelXml(pom, Boolean.TRUE, out);
     }
 
     @Command(value = "container", help = "Add a container with the JRebel start parameters")
@@ -63,8 +69,9 @@ public class JRebelPlugin implements Plugin {
         plugin.addPlugin(ProjectUtils.resolvePom(project), out);
     }
 
-    private void createRebelXml(Model pom, PipeOut out) {
-        rebelXml.createRebelXml(pom, out);
+    private void createRebelXml(Model pom, Boolean skipMaven, PipeOut out) {
+        Class<? extends RebelXml> selector = skipMaven ? FileRebelXml.class : MavenRebelXml.class;
+        rebelXml.select(selector).get().createRebelXml(pom, out);
     }
 
     private void createRebelConfig(String rebelHome, Model pom, PipeOut out) {

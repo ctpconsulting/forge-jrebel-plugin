@@ -1,4 +1,4 @@
-package org.jboss.seam.forge.jrebel;
+package org.jboss.seam.forge.jrebel.config;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +11,15 @@ import org.codehaus.plexus.util.IOUtil;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
 import org.jboss.seam.forge.project.Project;
 import org.jboss.seam.forge.project.facets.builtin.MavenResourceFacet;
-import org.jboss.seam.forge.shell.ShellColor;
 import org.jboss.seam.forge.shell.ShellMessages;
 import org.jboss.seam.forge.shell.plugins.PipeOut;
 
-public class JRebelXml {
+public class FileRebelXml implements RebelXml {
     
     @Inject
     private Project project;
     
+    @Override
     public void createRebelXml(Model pom, PipeOut out) {
         String pathVar = ProjectUtils.createPathVar(pom);
         MavenResourceFacet resource = project.getFacet(MavenResourceFacet.class);

@@ -18,9 +18,13 @@ forge $ mvn compile
 when you add source files under src/main/java or src/main/resources. The 'build' command will run a clean, 
 which stops JBoss. Any file put under src/main/webapp will be monitored by JRebel directly, no action required.
 
+OPTIONS
+- If you don't want to add the JRebel Maven plugin, use
+forge $ jrebel setup --withoutMaven
+Use $ jrebel rebel-xml to regenerate the rebel.xml (e.g. when switching from JAR to WAR packaging)
+
 NOTES
-- If you stop JBoss, use mvn clean package cargo:start to restart
-- use $ jrebel rebel-xml to regenerate the rebel.xml (e.g. when switching from JAR to WAR packaging)
+- If you stop JBoss, use mvn clean package cargo:start to restart the server
 - Make sure you have run agent-settings.sh/bat and saved an initial configuration,
   otherwise the agent will not be activated in JBoss.
 - JRebel up to v4.0 M1a does not yet fully support JBoss 6.

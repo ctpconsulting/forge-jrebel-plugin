@@ -1,6 +1,6 @@
 package org.jboss.seam.forge.jrebel.container;
 
-
+import static org.jboss.seam.forge.jrebel.util.ProjectUtils.createDom;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
@@ -74,7 +74,7 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     protected Xpp3Dom pluginConfig(Plugin plugin) {
         if (hasConfig(plugin))
             return (Xpp3Dom) plugin.getConfiguration();
-        return create("<configuration></configuration>");
+        return createDom("<configuration></configuration>");
     }
     
     protected Xpp3Dom addCargoConfig(Xpp3Dom parent) {
@@ -92,7 +92,7 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
                .append("        </cargo.jvmargs>")
                .append("    </properties>")
                .append("</configuration>");
-        parent.addChild(create(builder.toString()));
+        parent.addChild(createDom(builder.toString()));
         return parent;
     }
     
@@ -103,7 +103,7 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
             if (getContainerId().equals(id.getValue()))
                 return parent;
         }
-        parent.addChild(create(buildContainerString()));
+        parent.addChild(createDom(buildContainerString()));
         return parent;
     }
     

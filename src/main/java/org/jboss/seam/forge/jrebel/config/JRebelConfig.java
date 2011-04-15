@@ -1,13 +1,19 @@
-package org.jboss.seam.forge.jrebel;
+package org.jboss.seam.forge.jrebel.config;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
+import org.jboss.seam.forge.jrebel.JRebelPlugin;
 import org.jboss.seam.forge.shell.ShellMessages;
 import org.jboss.seam.forge.shell.plugins.PipeOut;
 
+/**
+ * Configures the project placeholder in the JRebel agent config file (jrebel.properties)
+ * 
+ * @author thomashug
+ */
 public class JRebelConfig {
 
     public void writeTo(String rebelHome, String property, String value, PipeOut out) {
