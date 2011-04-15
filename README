@@ -15,13 +15,13 @@ mvn cargo:start
 
 Back in Seam Forge, use
 forge $ mvn compile
-
-(build will run a clean, which stops JBoss)
+when you add source files under src/main/java or src/main/resources. The 'build' command will run a clean, 
+which stops JBoss. Any file put under src/main/webapp will be monitored by JRebel directly, no action required.
 
 NOTES
 - If you stop JBoss, use mvn clean package cargo:start to restart
 - use $ jrebel rebel-xml to regenerate the rebel.xml (e.g. when switching from JAR to WAR packaging)
 - Make sure you have run agent-settings.sh/bat and saved an initial configuration,
   otherwise the agent will not be activated in JBoss.
-
+- JRebel up to v4.0 M1a does not yet fully support JBoss 6.
 - Tested on OS X and Windows 7, Linux folks: give me a shout.

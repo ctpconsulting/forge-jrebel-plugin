@@ -1,16 +1,14 @@
 package org.jboss.seam.forge.jrebel.container;
 
-public enum Container {
-    
-    JBOSS6(JBoss6MavenPlugin.class);
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 
-    private Class<? extends ContainerMavenPlugin> container;
-    
-    public Class<? extends ContainerMavenPlugin> getContainer() {
-        return container;
-    }
-
-    private Container(Class<? extends ContainerMavenPlugin> container) {
-        this.container = container;
-    }
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE })
+public @interface Container {
+    ContainerType value();
 }

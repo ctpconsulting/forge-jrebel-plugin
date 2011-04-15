@@ -14,5 +14,10 @@ public abstract class ProjectUtils {
     public static String createPathVar(Model pom) {
         return pom.getArtifactId() + ".root";
     }
+    
+    public static String projectRootPath(Project project) {
+        String path = project.getProjectRoot().getUnderlyingResourceObject().getAbsolutePath();
+        return path.replace("\\", "\\\\");
+    }
 
 }

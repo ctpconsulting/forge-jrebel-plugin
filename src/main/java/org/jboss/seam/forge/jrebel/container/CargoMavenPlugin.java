@@ -1,18 +1,13 @@
 package org.jboss.seam.forge.jrebel.container;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
-import javax.inject.Inject;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.jboss.seam.forge.project.Project;
+import org.jboss.seam.forge.jrebel.JRebelPlugin;
 import org.jboss.seam.forge.project.facets.MavenCoreFacet;
-import org.jboss.seam.forge.shell.ShellColor;
+import org.jboss.seam.forge.shell.ShellMessages;
 import org.jboss.seam.forge.shell.plugins.PipeOut;
 
 public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
@@ -21,9 +16,6 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     public static final String ARTIFACT_ID = "cargo-maven2-plugin";
     public static final String PREFERRED_VERSION = "1.0.6";
     public static final String DEPENDENCY = GROUP_ID + ":" + ARTIFACT_ID;
-    
-    @Inject
-    private Project project;
 
     @Override
     public void updateConfig(Model pom, PipeOut out) {
@@ -45,11 +37,10 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     public void addPlugin(Model pom, PipeOut out) {
         try {
             MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
-            Plugin plugin = addJRebelConfig(
-                    createContainerPlugin(GROUP_ID, ARTIFACT_ID, PREFERRED_VERSION), out);
-            pom.getBuild().getPlugins().add(plugin);
+            Plugin plugin = addContainerPlugin(pom, GROUP_ID, ARTIFACT_ID, PREFERRED_VERSION);
+            addJRebelConfig(plugin, out);
             facet.setPOM(pom);
-            out.println(ShellColor.GREEN, "***SUCCESS*** Successfully added " + getName() + " container");
+            ShellMessages.success(out, "Added " + getName() + " container");
         } catch (Exception e) {
             throw new RuntimeException("Failed to add plugin", e);
         }
@@ -65,30 +56,68 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
         return ARTIFACT_ID;
     }
 
-    @Override
-    protected String getName() {
-        return "Cargo";
-    }
-
     protected boolean isCargoPlugin(Plugin plugin) {
         String group = plugin.getGroupId();
         String artifact = plugin.getArtifactId();
         return DEPENDENCY.equals(group + ":" + artifact);
     }
     
-    protected Plugin addJRebelConfig(Plugin plugin, PipeOut out) throws XmlPullParserException, IOException {
+    protected Plugin addJRebelConfig(Plugin plugin, PipeOut out) {
         checkRebelEnv(out);
-        Xpp3Dom config = (Xpp3Dom) plugin.getConfiguration();
-        Xpp3Dom startup = Xpp3DomBuilder.build(
-                new ByteArrayInputStream(configString(config == null).getBytes()), "UTF-8");
-        if (config != null) {
-            config.addChild(startup);
-        } else {
-            plugin.setConfiguration(startup);
-        }
+        Xpp3Dom config = pluginConfig(plugin);
+        addCargoConfig(config);
+        addContainer(config);
+        plugin.setConfiguration(config);
         return plugin;
     }
     
-    protected abstract String configString(boolean withConfig);
+    protected Xpp3Dom pluginConfig(Plugin plugin) {
+        if (hasConfig(plugin))
+            return (Xpp3Dom) plugin.getConfiguration();
+        return create("<configuration></configuration>");
+    }
+    
+    protected Xpp3Dom addCargoConfig(Xpp3Dom parent) {
+        Xpp3Dom[] containers = parent.getChildren("configuration");
+        if (containers != null && containers.length > 0)
+            return parent;
+        StringBuilder builder = new StringBuilder();
+        builder.append("<configuration>")
+               .append("    <type>standalone</type>")
+               .append("    <home>target/cargo</home>")
+               .append("    <properties>")
+               .append("        <cargo.jvmargs>")
+               .append("-noverify -javaagent:${env." + JRebelPlugin.REBEL_ENV_HOME + "}" +
+                       "/jrebel.jar -Xms256m -Xmx512m -XX:MaxPermSize=256m")
+               .append("        </cargo.jvmargs>")
+               .append("    </properties>")
+               .append("</configuration>");
+        parent.addChild(create(builder.toString()));
+        return parent;
+    }
+    
+    protected Xpp3Dom addContainer(Xpp3Dom parent) {
+        Xpp3Dom[] containers = parent.getChildren("container");
+        for (int i = 0; containers != null && i < containers.length; i++) {
+            Xpp3Dom id = containers[i].getChild("containerId");
+            if (getContainerId().equals(id.getValue()))
+                return parent;
+        }
+        parent.addChild(create(buildContainerString()));
+        return parent;
+    }
+    
+    protected String buildContainerString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<container>")
+               .append("    <containerId>").append(getContainerId()).append("</containerId>")
+               .append("    <home>").append(getContainerHome()).append("</home>")
+               .append("</container>");
+        return builder.toString();
+    }
+    
+    protected abstract String getContainerId();
+    
+    protected abstract String getContainerHome();
 
 }
