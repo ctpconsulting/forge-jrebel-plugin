@@ -51,8 +51,8 @@ public class JRebelPlugin implements Plugin {
             final PipeOut out) {
         Model pom = ProjectUtils.resolvePom(project);
         createRebelXml(pom, skipMaven, out);
-        createRebelConfig(home, pom, out);
-        updateContainerPlugins(pom, out);
+        createRebelConfig(home, pom);
+        updateContainerPlugins(pom);
     }
 
     @Command(value = "rebel-xml", help = "Creates or overwrites rebel.xml")
@@ -66,24 +66,24 @@ public class JRebelPlugin implements Plugin {
             @Option(name="named", required=true) ContainerType container,
             final PipeOut out) {
         ContainerMavenPlugin plugin = containers.select(new ContainerLiteral(container)).get();
-        plugin.addPlugin(ProjectUtils.resolvePom(project), out);
+        plugin.addPlugin(ProjectUtils.resolvePom(project));
     }
 
     private void createRebelXml(Model pom, Boolean skipMaven, PipeOut out) {
         Class<? extends RebelXml> selector = skipMaven ? FileRebelXml.class : MavenRebelXml.class;
-        rebelXml.select(selector).get().createRebelXml(pom, out);
+        rebelXml.select(selector).get().createRebelXml(pom);
     }
 
-    private void createRebelConfig(String rebelHome, Model pom, PipeOut out) {
+    private void createRebelConfig(String rebelHome, Model pom) {
         rebelConfig.writeTo(rebelHome, ProjectUtils.createPathVar(pom), 
-                ProjectUtils.projectRootPath(project), out);
+                ProjectUtils.projectRootPath(project));
     }
 
-    private void updateContainerPlugins(Model pom, PipeOut out) {
+    private void updateContainerPlugins(Model pom) {
         Iterator<ContainerMavenPlugin> it = containers.iterator();
         while (it.hasNext()) {
             ContainerMavenPlugin plugin = it.next();
-            plugin.updateConfig(pom, out);
+            plugin.updateConfig(pom);
         }
     }
 

@@ -58,10 +58,10 @@ public abstract class BaseContainerMavenPlugin implements ContainerMavenPlugin {
         return plugin;
     }
     
-    protected boolean checkRebelEnv(PipeOut out) {
+    protected boolean checkRebelEnv() {
         String rebelHome = System.getenv(JRebelPlugin.REBEL_ENV_HOME);
         if (StringUtils.isEmpty(rebelHome)) {
-            ShellMessages.info(out, "JRebel home variable " + JRebelPlugin.REBEL_ENV_HOME +
+            ShellMessages.info(shell, "JRebel home variable " + JRebelPlugin.REBEL_ENV_HOME +
                     " is not set. Please set it manually before starting the container.");
             return false;
         }

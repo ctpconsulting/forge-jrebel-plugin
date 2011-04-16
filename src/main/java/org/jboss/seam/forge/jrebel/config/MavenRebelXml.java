@@ -9,8 +9,8 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
 import org.jboss.seam.forge.project.Project;
 import org.jboss.seam.forge.project.facets.MavenCoreFacet;
+import org.jboss.seam.forge.shell.Shell;
 import org.jboss.seam.forge.shell.ShellMessages;
-import org.jboss.seam.forge.shell.plugins.PipeOut;
 
 /**
  * Add the configuration for the JRebel Maven plugin to generate the rebel.xml.
@@ -21,15 +21,18 @@ public class MavenRebelXml implements RebelXml {
     
     @Inject
     private Project project;
+    
+    @Inject
+    private Shell shell;
 
     @Override
-    public void createRebelXml(Model pom, PipeOut out) {
+    public void createRebelXml(Model pom) {
         MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
         Plugin plugin = ProjectUtils.resolvePlugin(pom, "org.zeroturnaround", "jrebel-maven-plugin", true);
         addExecution(plugin);
         addConfiguration(pom, plugin);
         facet.setPOM(pom);
-        ShellMessages.success(out, "Added the Maven JRebel Plugin. Run mvn compile to create your rebel.xml");
+        ShellMessages.success(shell, "Added the Maven JRebel Plugin. Run mvn compile to create your rebel.xml");
     }
 
     private void addExecution(Plugin plugin) {

@@ -11,20 +11,23 @@ import org.codehaus.plexus.util.IOUtil;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
 import org.jboss.seam.forge.project.Project;
 import org.jboss.seam.forge.project.facets.builtin.MavenResourceFacet;
+import org.jboss.seam.forge.shell.Shell;
 import org.jboss.seam.forge.shell.ShellMessages;
-import org.jboss.seam.forge.shell.plugins.PipeOut;
 
 public class FileRebelXml implements RebelXml {
     
     @Inject
     private Project project;
     
+    @Inject
+    private Shell shell;
+    
     @Override
-    public void createRebelXml(Model pom, PipeOut out) {
+    public void createRebelXml(Model pom) {
         String pathVar = ProjectUtils.createPathVar(pom);
         MavenResourceFacet resource = project.getFacet(MavenResourceFacet.class);
         resource.createResource(createXml(pathVar, pom).toCharArray(), "rebel.xml");
-        ShellMessages.success(out, "Created rebel.xml");
+        ShellMessages.success(shell, "Created rebel.xml");
     }
 
     private String createXml(String pathVar, Model pom) throws RuntimeException {

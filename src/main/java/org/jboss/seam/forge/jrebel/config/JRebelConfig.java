@@ -2,12 +2,13 @@ package org.jboss.seam.forge.jrebel.config;
 
 import java.io.File;
 import java.io.IOException;
+import javax.inject.Inject;
 
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.jboss.seam.forge.jrebel.JRebelPlugin;
+import org.jboss.seam.forge.shell.Shell;
 import org.jboss.seam.forge.shell.ShellMessages;
-import org.jboss.seam.forge.shell.plugins.PipeOut;
 
 /**
  * Configures the project placeholder in the JRebel agent config file (jrebel.properties)
@@ -15,15 +16,18 @@ import org.jboss.seam.forge.shell.plugins.PipeOut;
  * @author thomashug
  */
 public class JRebelConfig {
+    
+    @Inject
+    private Shell shell;
 
-    public void writeTo(String rebelHome, String property, String value, PipeOut out) {
+    public void writeTo(String rebelHome, String property, String value) {
         try {
             File properties = resolveRebelProperties(rebelHome);
             if (!containsProperty(properties, property)) {
                 FileUtils.fileAppend(properties.getAbsolutePath(), "\n" + property + "=" + value);
-                ShellMessages.success(out, "Updated JRebel config: " + property + " = " + value);
+                ShellMessages.success(shell, "Updated JRebel config: " + property + " = " + value);
             } else {
-                ShellMessages.info(out, "JRebel config already contains " + property + ", skipping.");
+                ShellMessages.info(shell, "JRebel config already contains " + property + ", skipping.");
             }
         } catch (IOException e) {
             throw new RuntimeException("Unable to write to jrebel.properties", e);

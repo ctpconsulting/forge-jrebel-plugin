@@ -1,5 +1,6 @@
 package org.jboss.seam.forge.jrebel.container;
 
+import javax.inject.Inject;
 import static org.jboss.seam.forge.jrebel.util.ProjectUtils.createDom;
 
 import org.apache.maven.model.Model;
@@ -7,8 +8,8 @@ import org.apache.maven.model.Plugin;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.jboss.seam.forge.jrebel.JRebelPlugin;
 import org.jboss.seam.forge.project.facets.MavenCoreFacet;
+import org.jboss.seam.forge.shell.Shell;
 import org.jboss.seam.forge.shell.ShellMessages;
-import org.jboss.seam.forge.shell.plugins.PipeOut;
 
 public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     
@@ -16,14 +17,17 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     public static final String ARTIFACT_ID = "cargo-maven2-plugin";
     public static final String PREFERRED_VERSION = "1.0.6";
     public static final String DEPENDENCY = GROUP_ID + ":" + ARTIFACT_ID;
+    
+    @Inject
+    private Shell shell;
 
     @Override
-    public void updateConfig(Model pom, PipeOut out) {
+    public void updateConfig(Model pom) {
         MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
         try {
             for (Plugin plugin : pom.getBuild().getPlugins()) {
                 if (isCargoPlugin(plugin)) {
-                    addJRebelConfig(plugin, out);
+                    addJRebelConfig(plugin);
                     facet.setPOM(pom);
                     return;
                 }
@@ -34,13 +38,13 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     }
 
     @Override
-    public void addPlugin(Model pom, PipeOut out) {
+    public void addPlugin(Model pom) {
         try {
             MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
             Plugin plugin = addContainerPlugin(pom, GROUP_ID, ARTIFACT_ID, PREFERRED_VERSION);
-            addJRebelConfig(plugin, out);
+            addJRebelConfig(plugin);
             facet.setPOM(pom);
-            ShellMessages.success(out, "Added " + getName() + " container");
+            ShellMessages.success(shell, "Added " + getName() + " container");
         } catch (Exception e) {
             throw new RuntimeException("Failed to add plugin", e);
         }
@@ -62,8 +66,8 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
         return DEPENDENCY.equals(group + ":" + artifact);
     }
     
-    protected Plugin addJRebelConfig(Plugin plugin, PipeOut out) {
-        checkRebelEnv(out);
+    protected Plugin addJRebelConfig(Plugin plugin) {
+        checkRebelEnv();
         Xpp3Dom config = pluginConfig(plugin);
         addCargoConfig(config);
         addContainer(config);
