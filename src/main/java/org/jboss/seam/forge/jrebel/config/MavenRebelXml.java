@@ -6,11 +6,11 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.jboss.forge.maven.MavenCoreFacet;
+import org.jboss.forge.project.Project;
+import org.jboss.forge.shell.Shell;
+import org.jboss.forge.shell.ShellMessages;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
-import org.jboss.seam.forge.project.Project;
-import org.jboss.seam.forge.project.facets.MavenCoreFacet;
-import org.jboss.seam.forge.shell.Shell;
-import org.jboss.seam.forge.shell.ShellMessages;
 
 /**
  * Add the configuration for the JRebel Maven plugin to generate the rebel.xml.

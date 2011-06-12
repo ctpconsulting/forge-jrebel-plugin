@@ -1,6 +1,5 @@
 package org.jboss.seam.forge.jrebel.container;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,17 +7,14 @@ import org.apache.maven.model.Model;
 
 import org.apache.maven.model.Plugin;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.jboss.forge.project.Project;
+import org.jboss.forge.project.dependencies.Dependency;
+import org.jboss.forge.project.dependencies.DependencyBuilder;
+import org.jboss.forge.project.facets.DependencyFacet;
+import org.jboss.forge.shell.Shell;
+import org.jboss.forge.shell.ShellMessages;
 import org.jboss.seam.forge.jrebel.JRebelPlugin;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
-import org.jboss.seam.forge.project.Project;
-import org.jboss.seam.forge.project.dependencies.Dependency;
-import org.jboss.seam.forge.project.dependencies.DependencyBuilder;
-import org.jboss.seam.forge.project.facets.DependencyFacet;
-import org.jboss.seam.forge.shell.Shell;
-import org.jboss.seam.forge.shell.ShellMessages;
-import org.jboss.seam.forge.shell.plugins.PipeOut;
 
 public abstract class BaseContainerMavenPlugin implements ContainerMavenPlugin {
     

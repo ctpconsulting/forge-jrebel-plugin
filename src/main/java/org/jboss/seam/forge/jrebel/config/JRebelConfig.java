@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
+import org.jboss.forge.shell.Shell;
+import org.jboss.forge.shell.ShellMessages;
 import org.jboss.seam.forge.jrebel.JRebelPlugin;
-import org.jboss.seam.forge.shell.Shell;
-import org.jboss.seam.forge.shell.ShellMessages;
 
 /**
  * Configures the project placeholder in the JRebel agent config file (jrebel.properties)

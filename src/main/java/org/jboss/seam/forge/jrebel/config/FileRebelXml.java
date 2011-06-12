@@ -8,11 +8,11 @@ import javax.inject.Inject;
 
 import org.apache.maven.model.Model;
 import org.codehaus.plexus.util.IOUtil;
+import org.jboss.forge.maven.facets.MavenResourceFacet;
+import org.jboss.forge.project.Project;
+import org.jboss.forge.shell.Shell;
+import org.jboss.forge.shell.ShellMessages;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
-import org.jboss.seam.forge.project.Project;
-import org.jboss.seam.forge.project.facets.builtin.MavenResourceFacet;
-import org.jboss.seam.forge.shell.Shell;
-import org.jboss.seam.forge.shell.ShellMessages;
 
 public class FileRebelXml implements RebelXml {
     

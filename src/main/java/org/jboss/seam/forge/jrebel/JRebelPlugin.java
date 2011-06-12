@@ -8,6 +8,14 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.apache.maven.model.Model;
+import org.jboss.forge.project.Project;
+import org.jboss.forge.shell.plugins.Alias;
+import org.jboss.forge.shell.plugins.Command;
+import org.jboss.forge.shell.plugins.Help;
+import org.jboss.forge.shell.plugins.Option;
+import org.jboss.forge.shell.plugins.PipeOut;
+import org.jboss.forge.shell.plugins.Plugin;
+import org.jboss.forge.shell.plugins.Topic;
 import org.jboss.seam.forge.jrebel.config.FileRebelXml;
 import org.jboss.seam.forge.jrebel.config.MavenRebelXml;
 import org.jboss.seam.forge.jrebel.config.RebelXml;
@@ -15,14 +23,6 @@ import org.jboss.seam.forge.jrebel.container.ContainerLiteral;
 import org.jboss.seam.forge.jrebel.container.ContainerType;
 import org.jboss.seam.forge.jrebel.container.ContainerMavenPlugin;
 import org.jboss.seam.forge.jrebel.util.ProjectUtils;
-import org.jboss.seam.forge.project.Project;
-import org.jboss.seam.forge.shell.plugins.Alias;
-import org.jboss.seam.forge.shell.plugins.Command;
-import org.jboss.seam.forge.shell.plugins.Help;
-import org.jboss.seam.forge.shell.plugins.Option;
-import org.jboss.seam.forge.shell.plugins.PipeOut;
-import org.jboss.seam.forge.shell.plugins.Plugin;
-import org.jboss.seam.forge.shell.plugins.Topic;
 
 @Alias("jrebel")
 @Help("Integrate JRebel in your project")
@@ -34,13 +34,13 @@ public class JRebelPlugin implements Plugin {
     @Inject
     private Project project;
 
-    @Inject @Any
+    @Inject
     private Instance<RebelXml> rebelXml;
 
     @Inject
     private JRebelConfig rebelConfig;
 
-    @Inject @Any
+    @Inject
     private Instance<ContainerMavenPlugin> containers;
 
     @Command(value = "setup", help = "Initialize JRebel for this project")

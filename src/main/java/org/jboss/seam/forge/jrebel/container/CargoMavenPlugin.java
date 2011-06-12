@@ -6,10 +6,10 @@ import static org.jboss.seam.forge.jrebel.util.ProjectUtils.createDom;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.jboss.forge.maven.MavenCoreFacet;
+import org.jboss.forge.shell.Shell;
+import org.jboss.forge.shell.ShellMessages;
 import org.jboss.seam.forge.jrebel.JRebelPlugin;
-import org.jboss.seam.forge.project.facets.MavenCoreFacet;
-import org.jboss.seam.forge.shell.Shell;
-import org.jboss.seam.forge.shell.ShellMessages;
 
 public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     
@@ -23,8 +23,10 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
 
     @Override
     public void updateConfig(Model pom) {
-        MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
         try {
+            System.out.println(shell);
+            System.out.println(project);
+            MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
             for (Plugin plugin : pom.getBuild().getPlugins()) {
                 if (isCargoPlugin(plugin)) {
                     addJRebelConfig(plugin);
