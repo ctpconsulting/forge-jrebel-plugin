@@ -1,4 +1,4 @@
-package org.jboss.seam.forge.jrebel.container;
+package org.jboss.forge.jrebel.container;
 
 import org.apache.maven.model.Model;
 

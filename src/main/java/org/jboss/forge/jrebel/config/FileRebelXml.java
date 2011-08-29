@@ -1,4 +1,4 @@
-package org.jboss.seam.forge.jrebel.config;
+package org.jboss.forge.jrebel.config;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,11 +8,11 @@ import javax.inject.Inject;
 
 import org.apache.maven.model.Model;
 import org.codehaus.plexus.util.IOUtil;
+import org.jboss.forge.jrebel.util.ProjectUtils;
 import org.jboss.forge.maven.facets.MavenResourceFacet;
 import org.jboss.forge.project.Project;
 import org.jboss.forge.shell.Shell;
 import org.jboss.forge.shell.ShellMessages;
-import org.jboss.seam.forge.jrebel.util.ProjectUtils;
 
 public class FileRebelXml implements RebelXml {
     

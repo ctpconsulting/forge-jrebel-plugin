@@ -1,15 +1,13 @@
-package org.jboss.seam.forge.jrebel.container;
+package org.jboss.forge.jrebel.container;
 
-import javax.inject.Inject;
-import static org.jboss.seam.forge.jrebel.util.ProjectUtils.createDom;
+import static org.jboss.forge.jrebel.util.ProjectUtils.createDom;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.jboss.forge.jrebel.JRebelPlugin;
 import org.jboss.forge.maven.MavenCoreFacet;
-import org.jboss.forge.shell.Shell;
 import org.jboss.forge.shell.ShellMessages;
-import org.jboss.seam.forge.jrebel.JRebelPlugin;
 
 public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     
@@ -17,16 +15,11 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     public static final String ARTIFACT_ID = "cargo-maven2-plugin";
     public static final String PREFERRED_VERSION = "1.0.6";
     public static final String DEPENDENCY = GROUP_ID + ":" + ARTIFACT_ID;
-    
-    @Inject
-    private Shell shell;
 
     @Override
     public void updateConfig(Model pom) {
         try {
-            System.out.println(shell);
-            System.out.println(project);
-            MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
+            MavenCoreFacet facet = getProject().getFacet(MavenCoreFacet.class);
             for (Plugin plugin : pom.getBuild().getPlugins()) {
                 if (isCargoPlugin(plugin)) {
                     addJRebelConfig(plugin);
@@ -42,11 +35,11 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     @Override
     public void addPlugin(Model pom) {
         try {
-            MavenCoreFacet facet = project.getFacet(MavenCoreFacet.class);
+            MavenCoreFacet facet = getProject().getFacet(MavenCoreFacet.class);
             Plugin plugin = addContainerPlugin(pom, GROUP_ID, ARTIFACT_ID, PREFERRED_VERSION);
             addJRebelConfig(plugin);
             facet.setPOM(pom);
-            ShellMessages.success(shell, "Added " + getName() + " container");
+            ShellMessages.success(getShell(), "Added " + getName() + " container");
         } catch (Exception e) {
             throw new RuntimeException("Failed to add plugin", e);
         }

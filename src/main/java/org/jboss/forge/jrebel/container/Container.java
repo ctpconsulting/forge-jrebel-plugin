@@ -1,4 +1,4 @@
-package org.jboss.seam.forge.jrebel.container;
+package org.jboss.forge.jrebel.container;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

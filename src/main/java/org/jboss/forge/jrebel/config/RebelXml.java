@@ -1,4 +1,4 @@
-package org.jboss.seam.forge.jrebel.config;
+package org.jboss.forge.jrebel.config;
 
 import org.apache.maven.model.Model;
 

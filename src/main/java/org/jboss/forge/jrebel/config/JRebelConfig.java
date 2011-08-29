@@ -1,4 +1,4 @@
-package org.jboss.seam.forge.jrebel.config;
+package org.jboss.forge.jrebel.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
+import org.jboss.forge.jrebel.JRebelPlugin;
 import org.jboss.forge.shell.Shell;
 import org.jboss.forge.shell.ShellMessages;
-import org.jboss.seam.forge.jrebel.JRebelPlugin;
 
 /**
  * Configures the project placeholder in the JRebel agent config file (jrebel.properties)

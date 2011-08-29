@@ -1,4 +1,4 @@
-package org.jboss.seam.forge.jrebel.util;
+package org.jboss.forge.jrebel.util;
 
 import java.io.ByteArrayInputStream;
 import org.apache.maven.model.Model;

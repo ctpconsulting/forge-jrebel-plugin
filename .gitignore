@@ -2,3 +2,7 @@
 /.settings
 /.classpath
 /.project
+
+/forge-jrebel-plugin.iml
+/forge-jrebel-plugin.ipr
+/forge-jrebel-plugin.iws
