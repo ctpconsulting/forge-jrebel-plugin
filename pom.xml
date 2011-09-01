@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jboss.seam.forge.jrebel</groupId>
     <artifactId>forge-jrebel-plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0.Beta1</version>
     <name>Seam Forge JRebel Plugin</name>
     <properties>
         <forge.api.version>1.0.0.Beta1</forge.api.version>

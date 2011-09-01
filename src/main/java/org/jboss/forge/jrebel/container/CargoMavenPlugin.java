@@ -13,7 +13,7 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
     
     public static final String GROUP_ID = "org.codehaus.cargo";
     public static final String ARTIFACT_ID = "cargo-maven2-plugin";
-    public static final String PREFERRED_VERSION = "1.0.6";
+    public static final String PREFERRED_VERSION = "1.1.2";
     public static final String DEPENDENCY = GROUP_ID + ":" + ARTIFACT_ID;
 
     @Override
@@ -83,7 +83,6 @@ public abstract class CargoMavenPlugin extends BaseContainerMavenPlugin {
         StringBuilder builder = new StringBuilder();
         builder.append("<configuration>")
                .append("    <type>standalone</type>")
-               .append("    <home>target/cargo</home>")
                .append("    <properties>")
                .append("        <cargo.jvmargs>")
                .append("-noverify -javaagent:${env." + JRebelPlugin.REBEL_ENV_HOME + "}" +

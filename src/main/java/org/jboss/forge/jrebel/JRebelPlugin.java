@@ -43,7 +43,7 @@ public class JRebelPlugin implements Plugin {
     @Command(value = "setup", help = "Initialize JRebel for this project")
     public void setup(
             @Option(name="rebelHome", help="Specify a REBEL_HOME") String home,
-            @Option(name="withoutMaven", help="Don't use the Zeroturnaround Maven Plugin",
+            @Option(name="withoutMavenPlugin", help="Don't use the Zeroturnaround Maven Plugin",
                     defaultValue="false", flagOnly=true) Boolean skipMaven) {
         Model pom = ProjectUtils.resolvePom(project);
         createRebelXml(pom, skipMaven);

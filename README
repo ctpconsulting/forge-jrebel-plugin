@@ -1,31 +1,32 @@
 USAGE
 
 Preparations required:
-- Define a JBOSS_HOME environment variable pointing to your JBoss 6 installation
+- Define a JBOSS_HOME environment variable pointing to your JBoss 6 or 7 installation
 - Define a REBEL_HOME environment variable pointing to your JRebel installation
 
 In Seam Forge, setup a project, make it a web project and run:
 forge $ forge git-plugin git://github.com/ctpconsulting/forge-jrebel-plugin.git
 forge $ jrebel setup
-forge $ jrebel container --named JBOSS6
+forge $ jrebel container --named JBOSS7
 forge $ build
 
 On a new shell command line:
-mvn cargo:start
+mvn cargo:run
 
 Back in Seam Forge, use
 forge $ mvn compile
-when you add source files under src/main/java or src/main/resources. The 'build' command will run a clean, 
-which stops JBoss. Any file put under src/main/webapp will be monitored by JRebel directly, no action required.
+when you add source files under src/main/java or src/main/resources.
+
+SUPPORTED CARGO CONTAINERS
+- JBOSS6
+- JBOSS7
 
 OPTIONS
 - If you don't want to add the JRebel Maven plugin, use
-forge $ jrebel setup --withoutMaven
+forge $ jrebel setup --withoutMavenPlugin
 Use $ jrebel rebel-xml to regenerate the rebel.xml (e.g. when switching from JAR to WAR packaging)
 
 NOTES
 - If you stop JBoss, use mvn clean package cargo:start to restart the server
-- Make sure you have run agent-settings.sh/bat and saved an initial configuration,
-  otherwise the agent will not be activated in JBoss.
-- JRebel up to v4.0 M1a does not yet fully support JBoss 6.
-- Tested on OS X and Windows 7, Linux folks: give me a shout.
+- Make sure you have run agent-settings.sh/bat and checked the initial configuration.
+- JRebel up to v4.0.3 does not yet fully support JBoss 6/7.
