@@ -27,6 +27,5 @@ forge $ jrebel setup --withoutMavenPlugin
 Use $ jrebel rebel-xml to regenerate the rebel.xml (e.g. when switching from JAR to WAR packaging)
 
 NOTES
-- If you stop JBoss, use mvn clean package cargo:start to restart the server
 - Make sure you have run agent-settings.sh/bat and checked the initial configuration.
 - JRebel up to v4.0.3 does not yet fully support JBoss 6/7.
