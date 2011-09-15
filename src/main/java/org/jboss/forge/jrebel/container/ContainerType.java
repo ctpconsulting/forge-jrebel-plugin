@@ -2,6 +2,6 @@ package org.jboss.forge.jrebel.container;
 
 public enum ContainerType {
     
-    JBOSS6, JBOSS7;
+    JBOSS_AS6, JBOSS_AS7;
 
 }

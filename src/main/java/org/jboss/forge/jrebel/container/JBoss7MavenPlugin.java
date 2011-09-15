@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.jboss.forge.project.Project;
 import org.jboss.forge.shell.Shell;
 
-@Container(ContainerType.JBOSS7)
+@Container(ContainerType.JBOSS_AS7)
 public class JBoss7MavenPlugin extends CargoMavenPlugin {
 
     @Inject 

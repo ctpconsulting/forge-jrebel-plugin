@@ -65,7 +65,7 @@ public class JRebelPluginTest extends AbstractShellTest {
         createEmptyConfigFile();
         
         // when
-        getShell().execute("jrebel container --named JBOSS7");
+        getShell().execute("jrebel container --named JBOSS_AS7");
         
         // then
         Plugin plugin = findPlugin(p, "org.codehaus.cargo", "cargo-maven2-plugin");

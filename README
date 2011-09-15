@@ -7,7 +7,7 @@ Preparations required:
 In Seam Forge, setup a project, make it a web project and run:
 forge $ forge git-plugin git://github.com/ctpconsulting/forge-jrebel-plugin.git
 forge $ jrebel setup
-forge $ jrebel container --named JBOSS7
+forge $ jrebel container --named JBOSS_AS7
 forge $ build
 
 On a new shell command line:
@@ -18,8 +18,8 @@ forge $ mvn compile
 when you add source files under src/main/java or src/main/resources.
 
 SUPPORTED CARGO CONTAINERS
-- JBOSS6
-- JBOSS7
+- JBOSS_AS6
+- JBOSS_AS7
 
 OPTIONS
 - If you don't want to add the JRebel Maven plugin, use
